@@ -1,0 +1,14 @@
+=== MODEL ARTIFACT REPORT ===
+
+Model Type: RandomForestRegressor
+Hyperparameters: {'bootstrap': True, 'ccp_alpha': 0.0, 'criterion': 'squared_error', 'max_depth': 10, 'max_features': 1.0, 'max_leaf_nodes': None, 'max_samples': None, 'min_impurity_decrease': 0.0, 'min_samples_leaf': 2, 'min_samples_split': 2, 'min_weight_fraction_leaf': 0.0, 'monotonic_cst': None, 'n_estimators': 100, 'n_jobs': None, 'oob_score': False, 'random_state': 42, 'verbose': 0, 'warm_start': False}
+Feature Count: 36
+Exact Feature List: ['Week_Number', 'Year', 'NDVI', 'Rainfall_mm', 'Temperature_C', 'LST_C', 'Sentinel2_Images', 'CHIRPS_Images', 'ERA5_Images', 'MODIS_LST_Images', 'NDVI_lag_1', 'NDVI_lag_2', 'NDVI_lag_3', 'NDVI_lag_4', 'Rainfall_mm_lag_1', 'Rainfall_mm_lag_2', 'Rainfall_mm_lag_3', 'Rainfall_mm_lag_4', 'Temperature_C_lag_1', 'Temperature_C_lag_2', 'Temperature_C_lag_3', 'Temperature_C_lag_4', 'LST_C_lag_1', 'LST_C_lag_2', 'LST_C_lag_3', 'LST_C_lag_4', 'NDVI_rolling_mean_4', 'NDVI_rolling_std_4', 'Rainfall_rolling_sum_4', 'Rainfall_rolling_mean_4', 'Temperature_rolling_mean_4', 'LST_rolling_mean_4', 'month', 'week_of_year', 'sin_week', 'cos_week']
+Model File Path: C:\Projects\AgriVision\ml\model_outputs\random_forest_model.joblib
+Inference Script Path: C:\Projects\AgriVision\ml\predict.py
+Inference Schema Path: C:\Projects\AgriVision\ml\model_outputs\inference_schema.json
+
+=== VERIFICATION RESULT ===
+Actual NDVI_next_week: 0.4334
+Random Forest Prediction: 0.4484
+Persistence Prediction: 0.4013
