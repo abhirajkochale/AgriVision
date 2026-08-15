@@ -1,0 +1,27 @@
+{
+    "original_rows": 241,
+    "feature_engineered_rows": 241,
+    "rows_with_valid_target": 234,
+    "rows_removed_due_to_temporal_gaps": 7,
+    "duplicate_rows": 0,
+    "duplicate_Week_Start": 0,
+    "date_range": {
+        "start": "2021-01-01",
+        "end": "2025-12-26"
+    },
+    "target_statistics": {
+        "count": 234.0,
+        "mean": 0.4428572436126417,
+        "std": 0.0905013198906132,
+        "min": 0.269205716056627,
+        "25%": 0.35926185642035247,
+        "50%": 0.4321378554320455,
+        "75%": 0.521196825096516,
+        "max": 0.656083111037047
+    },
+    "split_boundaries": {
+        "Train": "<= 2023-12-31",
+        "Validation": "> 2023-12-31 and <= 2024-12-31",
+        "Test": "> 2024-12-31"
+    }
+}

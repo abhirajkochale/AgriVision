@@ -1,0 +1,58 @@
+=== TARGET DEFINITION & TEMPORAL FEATURE ENGINEERING ===
+Original Rows: 241
+Rows with valid target: 234
+Rows missing target due to gaps/end: 7
+
+Final Features List:
+- Week_Start
+- Week_End
+- Week_Number
+- Year
+- NDVI
+- Rainfall_mm
+- Temperature_C
+- LST_C
+- Sentinel2_Images
+- CHIRPS_Images
+- ERA5_Images
+- MODIS_LST_Images
+- study_area
+- NDVI_next_week
+- NDVI_lag_1
+- NDVI_lag_2
+- NDVI_lag_3
+- NDVI_lag_4
+- Rainfall_mm_lag_1
+- Rainfall_mm_lag_2
+- Rainfall_mm_lag_3
+- Rainfall_mm_lag_4
+- Temperature_C_lag_1
+- Temperature_C_lag_2
+- Temperature_C_lag_3
+- Temperature_C_lag_4
+- LST_C_lag_1
+- LST_C_lag_2
+- LST_C_lag_3
+- LST_C_lag_4
+- NDVI_rolling_mean_4
+- NDVI_rolling_std_4
+- Rainfall_rolling_sum_4
+- Rainfall_rolling_mean_4
+- Temperature_rolling_mean_4
+- LST_rolling_mean_4
+- month
+- week_of_year
+- sin_week
+- cos_week
+
+Target Correlations:
+NDVI: 0.9102583859946195
+NDVI_lag_1: 0.850025439070888
+NDVI_lag_2: 0.7933220033517978
+NDVI_lag_4: 0.7686661102837611
+Rainfall_mm: 0.2891589908843505
+Temperature_C: -0.6880540308908171
+LST_C: -0.727789290526542
+Rainfall_rolling_sum_4: 0.5194589882754158
+Temperature_rolling_mean_4: -0.6752007709027454
+LST_rolling_mean_4: -0.734877446954381
