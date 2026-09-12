@@ -1,0 +1,42 @@
+AGRIVISION AI - FEATURE ENGINEERING REPORT
+======================================================================
+Input rows: 43,420
+Valid current-week → next-week NDVI pairs: 21,786
+Final ML-ready rows: 13,692
+Rows removed by strict lag/feature policy: 8,094
+
+Target:
+NDVI_next_week = actual observed NDVI exactly 7 days after Week_Start
+
+Feature policy:
+No interpolation
+No fabricated NDVI values
+No future information in predictors
+Strict complete-case feature filtering
+
+Feature columns:
+- NDVI
+- Rainfall_mm
+- Temperature_C
+- NDVI_lag_1
+- NDVI_lag_2
+- NDVI_lag_3
+- Rainfall_mm_lag_1
+- Rainfall_mm_lag_2
+- Rainfall_mm_lag_3
+- Temperature_C_lag_1
+- Temperature_C_lag_2
+- Temperature_C_lag_3
+- NDVI_rolling_3w
+- Rainfall_mm_rolling_3w
+- Rainfall_mm_rolling_4w
+- Temperature_C_rolling_3w
+- Temperature_C_rolling_4w
+- Month
+- Quarter
+- Week_of_Year
+- Monsoon_Season
+- Week_Sin
+- Week_Cos
+- latitude
+- longitude

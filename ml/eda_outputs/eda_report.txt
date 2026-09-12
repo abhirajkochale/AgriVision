@@ -1,0 +1,16 @@
+AGRIVISION AI - EDA REPORT
+============================================================
+Rows: 43,420
+Columns: 24
+Points: 167
+Weeks: 260
+Years: 2021, 2022, 2023, 2024, 2025
+NDVI available: 27,797
+NDVI missing: 15,623
+NDVI coverage: 64.02%
+Usable consecutive NDVI pairs: 21,786
+
+Important validation:
+Invalid NDVI values: 0
+Negative rainfall values: 0
+Extreme temperature values: 0

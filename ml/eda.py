@@ -1,186 +1,807 @@
-import os
-import json
-import logging
 from pathlib import Path
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
-import seaborn as plt_sns
-import datetime
 
-# Configure logging
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
-def perform_eda():
-    # Setup paths
-    base_dir = Path(__file__).resolve().parent.parent
-    dataset_path = base_dir / 'dataset' / 'AgriVision_Weekly_Dataset_2021_2025_IMPROVED.xlsx'
-    output_dir = base_dir / 'ml' / 'eda_outputs'
-    
-    # Create output directory
-    output_dir.mkdir(parents=True, exist_ok=True)
-    
-    # 1 & 2. Validate file existence
-    if not dataset_path.exists():
-        logging.error(f"Dataset not found at {dataset_path}")
-        report_missing = {
-            "error": "Dataset missing",
-            "path": str(dataset_path)
-        }
-        with open(output_dir / 'eda_summary.json', 'w') as f:
-            json.dump(report_missing, f, indent=4)
-        return False
+# ============================================================
+# AGRIVISION AI
+# EXPLORATORY DATA ANALYSIS
+# Maharashtra Combined Master Dataset
+# ============================================================
 
-    logging.info(f"Loading dataset from {dataset_path}")
-    df = pd.read_excel(dataset_path)
+print("=" * 70)
+print("AGRIVISION - EXPLORATORY DATA ANALYSIS")
+print("=" * 70)
 
-    # 3. Validate expected columns
-    expected_cols = [
-        'Week_Start', 'Week_End', 'Week_Number', 'Year',
-        'NDVI', 'Rainfall_mm', 'Temperature_C', 'LST_C',
-        'Sentinel2_Images', 'CHIRPS_Images', 'ERA5_Images', 'MODIS_LST_Images',
-        'study_area'
-    ]
-    
-    missing_cols = [col for col in expected_cols if col not in df.columns]
-    if missing_cols:
-        logging.warning(f"Missing expected columns: {missing_cols}")
-    
-    # 4 & 5. Parse dates and validate types
-    df['Week_Start'] = pd.to_datetime(df['Week_Start'])
-    df['Week_End'] = pd.to_datetime(df['Week_End'])
-    
-    # Sort chronologically just to be safe for gap checking (but we check ordering first)
-    is_sorted = df['Week_Start'].is_monotonic_increasing
-    
-    # 6. Check missing values
-    missing_values = df.isnull().sum().to_dict()
-    
-    # 7. Check duplicate rows
-    duplicate_rows = int(df.duplicated().sum())
-    
-    # 8. Check duplicate Week_Start
-    duplicate_weeks = int(df.duplicated(subset=['Week_Start']).sum())
-    
-    # 10. Check date gaps
-    df_sorted = df.sort_values('Week_Start').reset_index(drop=True)
-    date_diffs = df_sorted['Week_Start'].diff()
-    # A normal weekly gap is 7 days. Greater than 7 means a gap.
-    gaps = df_sorted[date_diffs > pd.Timedelta(days=7)]
-    gap_records = []
-    for idx, row in gaps.iterrows():
-        prev_date = df_sorted.loc[idx-1, 'Week_Start']
-        curr_date = row['Week_Start']
-        gap_records.append(f"{prev_date.date()} -> {curr_date.date()}")
-    
-    # 11 & 12. Generate descriptive statistics and numerical range checks
-    numeric_cols = ['NDVI', 'Rainfall_mm', 'Temperature_C', 'LST_C']
-    stats = df[numeric_cols].describe().to_dict()
-    
-    # 13. Correlation matrix
-    corr_matrix = df[numeric_cols].corr()
-    corr_dict = corr_matrix.to_dict()
-    
-    # 24. Produce machine-readable EDA summary
-    eda_summary = {
-        "dataset_shape": df.shape,
-        "is_chronologically_sorted": bool(is_sorted),
-        "missing_values": missing_values,
-        "duplicate_rows": duplicate_rows,
-        "duplicate_Week_Start": duplicate_weeks,
-        "date_range": {
-            "start": str(df['Week_Start'].min().date()),
-            "end": str(df['Week_Start'].max().date())
-        },
-        "identified_gaps": gap_records,
-        "statistics": stats,
-        "correlations": corr_dict
+
+# ------------------------------------------------------------
+# 1. PATHS
+# ------------------------------------------------------------
+
+PROJECT_DIR = Path(__file__).resolve().parents[1]
+
+DATASET_FILE = (
+    PROJECT_DIR
+    / "dataset"
+    / "AgriVision_Maharashtra_Combined_Master_2021_2025.csv"
+)
+
+OUTPUT_DIR = (
+    PROJECT_DIR
+    / "ml"
+    / "eda_outputs"
+)
+
+OUTPUT_DIR.mkdir(
+    parents=True,
+    exist_ok=True
+)
+
+
+print()
+print("Dataset:")
+print(DATASET_FILE)
+
+print()
+print("Output directory:")
+print(OUTPUT_DIR)
+
+
+# ------------------------------------------------------------
+# 2. LOAD DATA
+# ------------------------------------------------------------
+
+if not DATASET_FILE.exists():
+    raise FileNotFoundError(
+        f"\nCombined master dataset not found:\n{DATASET_FILE}"
+    )
+
+df = pd.read_csv(DATASET_FILE)
+
+print()
+print("=" * 70)
+print("DATASET OVERVIEW")
+print("=" * 70)
+
+print(f"Rows:    {len(df):,}")
+print(f"Columns: {len(df.columns)}")
+
+
+# ------------------------------------------------------------
+# 3. DATE CONVERSION
+# ------------------------------------------------------------
+
+df["Week_Start"] = pd.to_datetime(
+    df["Week_Start"],
+    errors="coerce"
+)
+
+df["Week_End"] = pd.to_datetime(
+    df["Week_End"],
+    errors="coerce"
+)
+
+
+# ------------------------------------------------------------
+# 4. BASIC SCHEMA
+# ------------------------------------------------------------
+
+schema = pd.DataFrame({
+    "column": df.columns,
+    "dtype": [str(df[col].dtype) for col in df.columns],
+    "missing": [df[col].isna().sum() for col in df.columns],
+    "missing_pct": [
+        df[col].isna().mean() * 100
+        for col in df.columns
+    ],
+    "unique_values": [
+        df[col].nunique(dropna=True)
+        for col in df.columns
+    ],
+})
+
+schema.to_csv(
+    OUTPUT_DIR / "schema.csv",
+    index=False
+)
+
+
+# ------------------------------------------------------------
+# 5. MISSING VALUES
+# ------------------------------------------------------------
+
+missing = (
+    df.isna()
+    .sum()
+    .sort_values(ascending=False)
+)
+
+missing_pct = (
+    df.isna()
+    .mean()
+    .mul(100)
+    .sort_values(ascending=False)
+)
+
+missing_report = pd.DataFrame({
+    "missing_count": missing,
+    "missing_percentage": missing_pct
+})
+
+missing_report.to_csv(
+    OUTPUT_DIR / "missing_values.csv"
+)
+
+
+print()
+print("Missing values:")
+print(missing_report.to_string())
+
+
+# ------------------------------------------------------------
+# 6. NUMERIC DESCRIPTIVE STATISTICS
+# ------------------------------------------------------------
+
+numeric_columns = [
+    "NDVI",
+    "Rainfall_mm",
+    "Temperature_C",
+    "Sentinel2_Images",
+    "CHIRPS_Days",
+    "ERA5_Days",
+]
+
+numeric_columns = [
+    col for col in numeric_columns
+    if col in df.columns
+]
+
+descriptive_statistics = (
+    df[numeric_columns]
+    .describe()
+    .T
+)
+
+descriptive_statistics.to_csv(
+    OUTPUT_DIR / "descriptive_statistics.csv"
+)
+
+
+print()
+print("=" * 70)
+print("DESCRIPTIVE STATISTICS")
+print("=" * 70)
+
+print(descriptive_statistics.to_string())
+
+
+# ------------------------------------------------------------
+# 7. DATASET VALIDATION
+# ------------------------------------------------------------
+
+print()
+print("=" * 70)
+print("RANGE VALIDATION")
+print("=" * 70)
+
+
+ndvi_invalid = (
+    (df["NDVI"].notna())
+    & (
+        (df["NDVI"] < -1)
+        | (df["NDVI"] > 1)
+    )
+).sum()
+
+rainfall_invalid = (
+    (df["Rainfall_mm"].notna())
+    & (df["Rainfall_mm"] < 0)
+).sum()
+
+temperature_invalid = (
+    df["Temperature_C"].notna()
+    & ~df["Temperature_C"].between(
+        -50,
+        60
+    )
+).sum()
+
+
+print(f"Invalid NDVI values: {ndvi_invalid}")
+print(f"Negative rainfall values: {rainfall_invalid}")
+print(
+    "Temperature values outside "
+    "-50°C to 60°C:",
+    temperature_invalid
+)
+
+
+# ------------------------------------------------------------
+# 8. NDVI COVERAGE
+# ------------------------------------------------------------
+
+total_rows = len(df)
+
+ndvi_available = df["NDVI"].notna().sum()
+
+ndvi_missing = df["NDVI"].isna().sum()
+
+ndvi_coverage = (
+    ndvi_available / total_rows
+) * 100
+
+
+print()
+print("=" * 70)
+print("NDVI COVERAGE")
+print("=" * 70)
+
+print(f"Total point-weeks: {total_rows:,}")
+print(f"NDVI available:   {ndvi_available:,}")
+print(f"NDVI missing:     {ndvi_missing:,}")
+print(f"NDVI coverage:    {ndvi_coverage:.2f}%")
+
+
+# ------------------------------------------------------------
+# 9. YEAR-WISE SUMMARY
+# ------------------------------------------------------------
+
+year_summary = (
+    df.groupby("Year")
+    .agg(
+        records=("point_id", "size"),
+        points=("point_id", "nunique"),
+        weeks=("Week_Start", "nunique"),
+        ndvi_available=("NDVI", "count"),
+        ndvi_mean=("NDVI", "mean"),
+        rainfall_mean=("Rainfall_mm", "mean"),
+        temperature_mean=("Temperature_C", "mean"),
+    )
+)
+
+year_summary["ndvi_coverage_pct"] = (
+    year_summary["ndvi_available"]
+    / year_summary["records"]
+    * 100
+)
+
+year_summary.to_csv(
+    OUTPUT_DIR / "yearly_summary.csv"
+)
+
+
+print()
+print("=" * 70)
+print("YEAR-WISE SUMMARY")
+print("=" * 70)
+
+print(year_summary.to_string())
+
+
+# ------------------------------------------------------------
+# 10. DISTRICT SUMMARY
+# ------------------------------------------------------------
+
+district_summary = (
+    df.groupby("district")
+    .agg(
+        records=("point_id", "size"),
+        points=("point_id", "nunique"),
+        ndvi_available=("NDVI", "count"),
+        ndvi_mean=("NDVI", "mean"),
+        rainfall_mean=("Rainfall_mm", "mean"),
+        temperature_mean=("Temperature_C", "mean"),
+    )
+)
+
+district_summary["ndvi_coverage_pct"] = (
+    district_summary["ndvi_available"]
+    / district_summary["records"]
+    * 100
+)
+
+district_summary = district_summary.sort_values(
+    "ndvi_coverage_pct"
+)
+
+district_summary.to_csv(
+    OUTPUT_DIR / "district_summary.csv"
+)
+
+
+# ------------------------------------------------------------
+# 11. POINT-LEVEL NDVI COVERAGE
+# ------------------------------------------------------------
+
+point_summary = (
+    df.groupby("point_id")
+    .agg(
+        records=("Week_Start", "size"),
+        ndvi_available=("NDVI", "count"),
+        ndvi_mean=("NDVI", "mean"),
+        rainfall_mean=("Rainfall_mm", "mean"),
+        temperature_mean=("Temperature_C", "mean"),
+        district=("district", "first"),
+    )
+)
+
+point_summary["ndvi_coverage_pct"] = (
+    point_summary["ndvi_available"]
+    / point_summary["records"]
+    * 100
+)
+
+point_summary.to_csv(
+    OUTPUT_DIR / "point_summary.csv"
+)
+
+
+# ------------------------------------------------------------
+# 12. WEEK-LEVEL NDVI COVERAGE
+# ------------------------------------------------------------
+
+weekly_coverage = (
+    df.groupby(
+        ["Year", "Week_Number"]
+    )
+    .agg(
+        total_points=("point_id", "size"),
+        ndvi_available=("NDVI", "count"),
+    )
+    .reset_index()
+)
+
+weekly_coverage["ndvi_coverage_pct"] = (
+    weekly_coverage["ndvi_available"]
+    / weekly_coverage["total_points"]
+    * 100
+)
+
+weekly_coverage.to_csv(
+    OUTPUT_DIR / "weekly_ndvi_coverage.csv",
+    index=False
+)
+
+
+# ------------------------------------------------------------
+# 13. CONSECUTIVE NDVI OBSERVATIONS
+# ------------------------------------------------------------
+
+print()
+print("=" * 70)
+print("CONSECUTIVE NDVI ANALYSIS")
+print("=" * 70)
+
+df = df.sort_values(
+    ["point_id", "Week_Start"]
+).reset_index(drop=True)
+
+
+df["next_week_ndvi"] = (
+    df.groupby("point_id")["NDVI"]
+    .shift(-1)
+)
+
+
+df["next_week_date"] = (
+    df.groupby("point_id")["Week_Start"]
+    .shift(-1)
+)
+
+
+# A valid consecutive pair requires:
+# 1. Current NDVI exists
+# 2. Next NDVI exists
+# 3. Next timestamp is exactly 7 days later
+
+df["is_consecutive_ndvi_pair"] = (
+    df["NDVI"].notna()
+    & df["next_week_ndvi"].notna()
+    & (
+        df["next_week_date"]
+        == df["Week_Start"]
+        + pd.Timedelta(days=7)
+    )
+)
+
+consecutive_pairs = (
+    df["is_consecutive_ndvi_pair"].sum()
+)
+
+print(
+    "Usable current-week → next-week NDVI pairs:",
+    f"{consecutive_pairs:,}"
+)
+
+print(
+    "Potential NDVI observations:",
+    f"{ndvi_available:,}"
+)
+
+
+# ------------------------------------------------------------
+# 14. TARGET AVAILABILITY BY YEAR
+# ------------------------------------------------------------
+
+target_by_year = (
+    df.groupby("Year")
+    .agg(
+        current_ndvi=("NDVI", "count"),
+        usable_next_week_pairs=(
+            "is_consecutive_ndvi_pair",
+            "sum"
+        ),
+    )
+)
+
+target_by_year.to_csv(
+    OUTPUT_DIR / "target_availability_by_year.csv"
+)
+
+
+print()
+print(
+    target_by_year.to_string()
+)
+
+
+# ------------------------------------------------------------
+# 15. CORRELATION MATRIX
+# ------------------------------------------------------------
+
+correlation_columns = [
+    "NDVI",
+    "Rainfall_mm",
+    "Temperature_C",
+]
+
+correlation_matrix = (
+    df[correlation_columns]
+    .corr()
+)
+
+correlation_matrix.to_csv(
+    OUTPUT_DIR / "correlation_matrix.csv"
+)
+
+
+print()
+print("=" * 70)
+print("CORRELATION MATRIX")
+print("=" * 70)
+
+print(correlation_matrix.to_string())
+
+
+# ------------------------------------------------------------
+# 16. WEEKLY MEAN TRENDS
+# ------------------------------------------------------------
+
+weekly_trends = (
+    df.groupby("Week_Start")
+    .agg(
+        NDVI_mean=("NDVI", "mean"),
+        Rainfall_mean=("Rainfall_mm", "mean"),
+        Temperature_mean=("Temperature_C", "mean"),
+    )
+    .reset_index()
+)
+
+weekly_trends.to_csv(
+    OUTPUT_DIR / "weekly_trends.csv",
+    index=False
+)
+
+
+# ------------------------------------------------------------
+# 17. PLOT 1 - NDVI DISTRIBUTION
+# ------------------------------------------------------------
+
+plt.figure(figsize=(10, 6))
+
+df["NDVI"].dropna().hist(bins=50)
+
+plt.xlabel("NDVI")
+plt.ylabel("Frequency")
+plt.title("AgriVision NDVI Distribution")
+
+plt.tight_layout()
+
+plt.savefig(
+    OUTPUT_DIR / "ndvi_distribution.png",
+    dpi=150
+)
+
+plt.close()
+
+
+# ------------------------------------------------------------
+# 18. PLOT 2 - RAINFALL DISTRIBUTION
+# ------------------------------------------------------------
+
+plt.figure(figsize=(10, 6))
+
+df["Rainfall_mm"].hist(bins=50)
+
+plt.xlabel("Weekly Rainfall (mm)")
+plt.ylabel("Frequency")
+plt.title("AgriVision Weekly Rainfall Distribution")
+
+plt.tight_layout()
+
+plt.savefig(
+    OUTPUT_DIR / "rainfall_distribution.png",
+    dpi=150
+)
+
+plt.close()
+
+
+# ------------------------------------------------------------
+# 19. PLOT 3 - TEMPERATURE DISTRIBUTION
+# ------------------------------------------------------------
+
+plt.figure(figsize=(10, 6))
+
+df["Temperature_C"].hist(bins=50)
+
+plt.xlabel("Weekly Mean Temperature (°C)")
+plt.ylabel("Frequency")
+plt.title("AgriVision Weekly Temperature Distribution")
+
+plt.tight_layout()
+
+plt.savefig(
+    OUTPUT_DIR / "temperature_distribution.png",
+    dpi=150
+)
+
+plt.close()
+
+
+# ------------------------------------------------------------
+# 20. PLOT 4 - NDVI TREND
+# ------------------------------------------------------------
+
+plt.figure(figsize=(12, 6))
+
+plt.plot(
+    weekly_trends["Week_Start"],
+    weekly_trends["NDVI_mean"]
+)
+
+plt.xlabel("Week")
+plt.ylabel("Mean NDVI")
+plt.title("Mean Weekly NDVI - Maharashtra")
+
+plt.xticks(rotation=45)
+plt.tight_layout()
+
+plt.savefig(
+    OUTPUT_DIR / "ndvi_temporal_trend.png",
+    dpi=150
+)
+
+plt.close()
+
+
+# ------------------------------------------------------------
+# 21. PLOT 5 - RAINFALL TREND
+# ------------------------------------------------------------
+
+plt.figure(figsize=(12, 6))
+
+plt.plot(
+    weekly_trends["Week_Start"],
+    weekly_trends["Rainfall_mean"]
+)
+
+plt.xlabel("Week")
+plt.ylabel("Mean Weekly Rainfall (mm)")
+plt.title("Mean Weekly Rainfall - Maharashtra")
+
+plt.xticks(rotation=45)
+plt.tight_layout()
+
+plt.savefig(
+    OUTPUT_DIR / "rainfall_temporal_trend.png",
+    dpi=150
+)
+
+plt.close()
+
+
+# ------------------------------------------------------------
+# 22. PLOT 6 - TEMPERATURE TREND
+# ------------------------------------------------------------
+
+plt.figure(figsize=(12, 6))
+
+plt.plot(
+    weekly_trends["Week_Start"],
+    weekly_trends["Temperature_mean"]
+)
+
+plt.xlabel("Week")
+plt.ylabel("Mean Temperature (°C)")
+plt.title("Mean Weekly Temperature - Maharashtra")
+
+plt.xticks(rotation=45)
+plt.tight_layout()
+
+plt.savefig(
+    OUTPUT_DIR / "temperature_temporal_trend.png",
+    dpi=150
+)
+
+plt.close()
+
+
+# ------------------------------------------------------------
+# 23. OUTLIER SUMMARY
+# ------------------------------------------------------------
+
+outlier_summary = {}
+
+for column in [
+    "NDVI",
+    "Rainfall_mm",
+    "Temperature_C",
+]:
+
+    series = df[column].dropna()
+
+    q1 = series.quantile(0.25)
+    q3 = series.quantile(0.75)
+
+    iqr = q3 - q1
+
+    lower = q1 - 1.5 * iqr
+    upper = q3 + 1.5 * iqr
+
+    outlier_count = (
+        (series < lower)
+        | (series > upper)
+    ).sum()
+
+    outlier_summary[column] = {
+        "Q1": q1,
+        "Q3": q3,
+        "IQR": iqr,
+        "lower_bound": lower,
+        "upper_bound": upper,
+        "outlier_count": outlier_count,
+        "outlier_percentage": (
+            outlier_count
+            / len(series)
+            * 100
+        ),
     }
-    
-    with open(output_dir / 'eda_summary.json', 'w') as f:
-        json.dump(eda_summary, f, indent=4)
-        
-    # Save descriptive statistics and correlations to CSV
-    df[numeric_cols].describe().to_csv(output_dir / 'descriptive_statistics.csv')
-    corr_matrix.to_csv(output_dir / 'correlation_matrix.csv')
-    
-    # Yearly counts
-    yearly_counts = df['Year'].value_counts().sort_index().reset_index()
-    yearly_counts.columns = ['Year', 'Count']
-    yearly_counts.to_csv(output_dir / 'yearly_counts.csv', index=False)
-    
-    # Weekly gaps
-    gaps_df = pd.DataFrame({'Missing_Period': gap_records})
-    gaps_df.to_csv(output_dir / 'weekly_gaps.csv', index=False)
-        
-    # 25. Produce a human-readable EDA report
-    with open(output_dir / 'eda_report.txt', 'w') as f:
-        f.write("=== AGRI-VISION AI EDA REPORT ===\n\n")
-        f.write(f"Dataset Shape: {df.shape[0]} rows, {df.shape[1]} columns\n")
-        f.write(f"Chronologically Sorted: {is_sorted}\n")
-        f.write(f"Duplicate Rows: {duplicate_rows}\n")
-        f.write(f"Duplicate Week_Start: {duplicate_weeks}\n")
-        f.write(f"Date Range: {df['Week_Start'].min().date()} to {df['Week_Start'].max().date()}\n\n")
-        f.write("Identified Date Gaps (>7 days):\n")
-        for gap in gap_records:
-            f.write(f" - {gap}\n")
-        f.write("\nMissing Values:\n")
-        for k, v in missing_values.items():
-            f.write(f" - {k}: {v}\n")
-        f.write("\nStatistics:\n")
-        f.write(df[numeric_cols].describe().to_string())
-        f.write("\n\nCorrelations:\n")
-        f.write(corr_matrix.to_string())
-        
-    # --- PLOTTING ---
-    plt_sns.set_theme(style="whitegrid")
-    
-    # 14-17. Analyze distributions and 22. Feature distribution plots
-    fig, axes = plt.subplots(2, 2, figsize=(12, 10))
-    fig.suptitle('Feature Distributions')
-    plt_sns.histplot(df['NDVI'], kde=True, ax=axes[0, 0], color='green').set_title('NDVI Distribution')
-    plt_sns.histplot(df['Rainfall_mm'], kde=True, ax=axes[0, 1], color='blue').set_title('Rainfall (mm) Distribution')
-    plt_sns.histplot(df['Temperature_C'], kde=True, ax=axes[1, 0], color='orange').set_title('Temperature (°C) Distribution')
-    plt_sns.histplot(df['LST_C'], kde=True, ax=axes[1, 1], color='red').set_title('LST (°C) Distribution')
-    plt.tight_layout()
-    plt.savefig(output_dir / 'feature_distributions.png')
-    plt.close()
-    
-    # 18-21. Generate temporal trends
-    fig, axes = plt.subplots(4, 1, figsize=(14, 16), sharex=True)
-    fig.suptitle('Temporal Trends (2021-2025)')
-    
-    axes[0].plot(df_sorted['Week_Start'], df_sorted['NDVI'], color='green', marker='o', markersize=2, linestyle='-')
-    axes[0].set_title('NDVI Trend')
-    axes[0].set_ylabel('NDVI')
-    
-    axes[1].plot(df_sorted['Week_Start'], df_sorted['Rainfall_mm'], color='blue', marker='o', markersize=2, linestyle='-')
-    axes[1].set_title('Rainfall Trend')
-    axes[1].set_ylabel('Rainfall (mm)')
-    
-    axes[2].plot(df_sorted['Week_Start'], df_sorted['Temperature_C'], color='orange', marker='o', markersize=2, linestyle='-')
-    axes[2].set_title('Temperature Trend')
-    axes[2].set_ylabel('Temperature (°C)')
-    
-    axes[3].plot(df_sorted['Week_Start'], df_sorted['LST_C'], color='red', marker='o', markersize=2, linestyle='-')
-    axes[3].set_title('LST Trend')
-    axes[3].set_ylabel('LST (°C)')
-    axes[3].set_xlabel('Date')
-    
-    plt.tight_layout()
-    plt.savefig(output_dir / 'temporal_trends.png')
-    plt.close()
-    
-    # 23. Generate correlation heatmap
-    plt.figure(figsize=(8, 6))
-    plt_sns.heatmap(corr_matrix, annot=True, cmap='coolwarm', fmt=".3f", vmin=-1, vmax=1)
-    plt.title('Correlation Heatmap')
-    plt.tight_layout()
-    plt.savefig(output_dir / 'correlation_heatmap.png')
-    plt.close()
-    
-    logging.info("EDA completed successfully. Outputs saved to ml/eda_outputs/")
-    return True
 
-if __name__ == "__main__":
-    perform_eda()
+outlier_df = pd.DataFrame(
+    outlier_summary
+).T
+
+outlier_df.to_csv(
+    OUTPUT_DIR / "outlier_summary.csv"
+)
+
+
+# ------------------------------------------------------------
+# 24. EDA REPORT
+# ------------------------------------------------------------
+
+report_lines = []
+
+report_lines.append(
+    "AGRIVISION AI - EDA REPORT"
+)
+
+report_lines.append(
+    "=" * 60
+)
+
+report_lines.append(
+    f"Rows: {len(df):,}"
+)
+
+report_lines.append(
+    f"Columns: {len(df.columns) - 4:,}"
+)
+
+report_lines.append(
+    f"Points: {df['point_id'].nunique()}"
+)
+
+report_lines.append(
+    f"Weeks: {df['Week_Start'].nunique()}"
+)
+
+report_lines.append(
+    "Years: "
+    + ", ".join(
+        map(
+            str,
+            sorted(df["Year"].dropna().unique())
+        )
+    )
+)
+
+report_lines.append(
+    f"NDVI available: {ndvi_available:,}"
+)
+
+report_lines.append(
+    f"NDVI missing: {ndvi_missing:,}"
+)
+
+report_lines.append(
+    f"NDVI coverage: {ndvi_coverage:.2f}%"
+)
+
+report_lines.append(
+    f"Usable consecutive NDVI pairs: "
+    f"{consecutive_pairs:,}"
+)
+
+report_lines.append(
+    ""
+)
+
+report_lines.append(
+    "Important validation:"
+)
+
+report_lines.append(
+    f"Invalid NDVI values: {ndvi_invalid}"
+)
+
+report_lines.append(
+    f"Negative rainfall values: "
+    f"{rainfall_invalid}"
+)
+
+report_lines.append(
+    f"Extreme temperature values: "
+    f"{temperature_invalid}"
+)
+
+
+with open(
+    OUTPUT_DIR / "eda_report.txt",
+    "w",
+    encoding="utf-8"
+) as f:
+
+    f.write(
+        "\n".join(report_lines)
+    )
+
+
+# ------------------------------------------------------------
+# 25. CLEAN END
+# ------------------------------------------------------------
+
+print()
+print("=" * 70)
+print("EDA COMPLETE")
+print("=" * 70)
+
+print()
+print("Outputs created in:")
+print(OUTPUT_DIR)
+
+print()
+print(
+    "Most important result:"
+)
+
+print(
+    "Usable current-week → next-week NDVI pairs:",
+    f"{consecutive_pairs:,}"
+)
+
+print()
+print("DONE")
+print("=" * 70)
