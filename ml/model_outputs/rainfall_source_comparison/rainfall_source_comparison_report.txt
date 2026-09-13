@@ -1,0 +1,60 @@
+AGRIVISION AI - CHIRPS vs GSMaP FORMAL MODEL COMPARISON
+Evaluation period: 2024–2025
+
+TEST SET
+Samples: 8,484
+Same point_id + Week_Start observations used by both models.
+Actual NDVI targets verified identical.
+
+OVERALL PERFORMANCE
+CHIRPS MAE: 0.0431389458
+GSMaP MAE: 0.0430771070
+GSMaP minus CHIRPS MAE: -0.0000618387
+MAE percentage change: -0.143348%
+
+CHIRPS RMSE: 0.0687067137
+GSMaP RMSE: 0.0685494937
+GSMaP minus CHIRPS RMSE: -0.0001572200
+RMSE percentage change: -0.228828%
+
+CHIRPS R2: 0.8960145326
+GSMaP R2: 0.8964898833
+GSMaP minus CHIRPS R2: +0.0004753507
+
+PAIRED WIN COUNTS
+GSMaP lower absolute error: 4,279 (50.4361%)
+CHIRPS lower absolute error: 4,205 (49.5639%)
+Equal absolute error: 0 (0.0000%)
+
+PAIRED ABSOLUTE-ERROR DIFFERENCE
+Mean: -0.0000618387
+Median: -0.0000430173
+
+PAIRED T-TEST
+Statistic: -0.9560575088
+p-value: 3.3907042470e-01
+
+WILCOXON SIGNED-RANK TEST
+Statistic: 17748008.0000000000
+p-value: 2.7034554900e-01
+
+BOOTSTRAP
+Mean difference: -0.0000618779
+95% CI lower: -0.0001874760
+95% CI upper: 0.0000634719
+
+PRELIMINARY DECISION
+GSMaP has better aggregate test metrics.
+The paired Wilcoxon test is NOT significant at alpha=0.05.
+
+FINAL INTERPRETATION SHOULD CONSIDER
+1. Aggregate predictive performance
+2. Paired error distribution
+3. Year-wise consistency
+4. Location-wise consistency
+5. Rainfall-condition behavior
+6. Statistical significance
+7. Operational rainfall-data availability
+
+OUTPUT DIRECTORY
+C:\Projects\AgriVision\ml\model_outputs\rainfall_source_comparison
