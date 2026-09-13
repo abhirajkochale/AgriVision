@@ -1,0 +1,27 @@
+point_id,district,Case_Study_Group,Current_NDVI,Current_GSMaP_Rainfall_mm,Current_Temperature_C,Predicted_NDVI_Next_Week,Predicted_NDVI_Change,Predicted_NDVI_Change_Percent,Prediction_Status,Operational_Trend_Status,freshness_status,prediction_eligibility,reason
+P147,Satara,Kavathe-Khanapur,,35.15161668509245,22.772005971272847,,,,INCOMPLETE_INPUTS,NO_PREDICTION,STALE,NOT_READY,Common data is too old for real-time prediction.
+P061,Latur,Latur,,1.4146832451224327,24.954094187418605,,,,INCOMPLETE_INPUTS,NO_PREDICTION,WARNING,NOT_READY,Common data exists but is older than the preferred freshness window.
+P062,Latur,Latur,,0.1275975406169891,24.292066192626976,,,,INCOMPLETE_INPUTS,NO_PREDICTION,WARNING,NOT_READY,Common data exists but is older than the preferred freshness window.
+P063,Latur,Latur,,3.1083181723952293,24.36030349731448,,,,INCOMPLETE_INPUTS,NO_PREDICTION,WARNING,NOT_READY,Common data exists but is older than the preferred freshness window.
+P064,Latur,Latur,,3.0808936059474945,24.268181101481105,,,,INCOMPLETE_INPUTS,NO_PREDICTION,WARNING,NOT_READY,Common data exists but is older than the preferred freshness window.
+P065,Latur,Latur,0.5412353873252869,1.0781823247671127,24.177564239501976,0.5147747271368213,-0.0264606601884656,-4.888937569147253,READY,STABLE,READY,ELIGIBLE,"Recent common NDVI, rainfall and temperature data available."
+P066,Latur,Latur,,2.013407491147518,24.14806391398116,,,,INCOMPLETE_INPUTS,NO_PREDICTION,STALE,NOT_READY,Common data is too old for real-time prediction.
+P067,Latur,Latur,,3.1083181723952293,24.36030349731448,,,,INCOMPLETE_INPUTS,NO_PREDICTION,WARNING,NOT_READY,Common data exists but is older than the preferred freshness window.
+P068,Latur,Latur,,3.3309918642044067,24.352857208251976,,,,INCOMPLETE_INPUTS,NO_PREDICTION,STALE,NOT_READY,Common data is too old for real-time prediction.
+P069,Latur,Latur,0.8857399821281433,3.131015993654728,25.54613520304366,0.7786624124549679,-0.1070775696731753,-12.089052299062196,READY,HIGH_STRESS_RISK,READY,ELIGIBLE,"Recent common NDVI, rainfall and temperature data available."
+P070,Latur,Latur,,3.118549413979053,25.19815343221029,,,,INCOMPLETE_INPUTS,NO_PREDICTION,WARNING,NOT_READY,Common data exists but is older than the preferred freshness window.
+P071,Latur,Latur,,2.542378179728985,24.17784907023116,,,,INCOMPLETE_INPUTS,NO_PREDICTION,STALE,NOT_READY,Common data is too old for real-time prediction.
+P072,Latur,Latur,,2.92360470443964,24.27347081502279,,,,INCOMPLETE_INPUTS,NO_PREDICTION,WARNING,NOT_READY,Common data exists but is older than the preferred freshness window.
+P073,Latur,Latur,0.4909803867340088,5.119359135627747,24.36388422648116,0.4921973696750601,0.0012169829410513,0.2478679340221156,READY,STABLE,READY,ELIGIBLE,"Recent common NDVI, rainfall and temperature data available."
+P074,Latur,Latur,,1.3973242938518524,24.797111765543605,,,,INCOMPLETE_INPUTS,NO_PREDICTION,WARNING,NOT_READY,Common data exists but is older than the preferred freshness window.
+P075,Latur,Latur,,3.560820572078228,25.517855580647847,,,,INCOMPLETE_INPUTS,NO_PREDICTION,WARNING,NOT_READY,Common data exists but is older than the preferred freshness window.
+P076,Latur,Latur,0.715681254863739,0.0,23.98416417439779,0.6854981091321929,-0.0301831457315461,-4.217400627223748,READY,STABLE,READY,ELIGIBLE,"Recent common NDVI, rainfall and temperature data available."
+P077,Latur,Latur,0.8573906421661377,3.29011469334364,24.22472407023116,0.7839146032601587,-0.0734760389059789,-8.569727180640424,READY,WATCH,READY,ELIGIBLE,"Recent common NDVI, rainfall and temperature data available."
+P078,Latur,Latur,,3.418640285730362,24.410718536376976,,,,INCOMPLETE_INPUTS,NO_PREDICTION,STALE,NOT_READY,Common data is too old for real-time prediction.
+P079,Latur,Latur,,1.080000266432762,25.30590082804366,,,,INCOMPLETE_INPUTS,NO_PREDICTION,WARNING,NOT_READY,Common data exists but is older than the preferred freshness window.
+P080,Latur,Latur,,0.1275975406169891,24.292066192626976,,,,INCOMPLETE_INPUTS,NO_PREDICTION,STALE,NOT_READY,Common data is too old for real-time prediction.
+P081,Latur,Latur,,2.542378179728985,24.17784907023116,,,,INCOMPLETE_INPUTS,NO_PREDICTION,STALE,NOT_READY,Common data is too old for real-time prediction.
+P082,Latur,Latur,,2.5164974853396416,24.252678171793605,,,,INCOMPLETE_INPUTS,NO_PREDICTION,WARNING,NOT_READY,Common data exists but is older than the preferred freshness window.
+P083,Latur,Latur,,3.70891547203064,24.823560333251976,,,,INCOMPLETE_INPUTS,NO_PREDICTION,WARNING,NOT_READY,Common data exists but is older than the preferred freshness window.
+P084,Latur,Latur,,1.7801535949110985,24.43199946085616,,,,INCOMPLETE_INPUTS,NO_PREDICTION,STALE,NOT_READY,Common data is too old for real-time prediction.
+P085,Latur,Latur,,3.0808936059474945,24.268181101481105,,,,INCOMPLETE_INPUTS,NO_PREDICTION,WARNING,NOT_READY,Common data exists but is older than the preferred freshness window.

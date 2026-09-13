@@ -1,0 +1,68 @@
+AGRIVISION AI
+FINAL 2026 OPERATIONAL REPORT
+================================================================================
+
+Report generated: 2026-09-14 00:32:40
+Latest realtime week: 2026-09-03
+
+MONITORING COVERAGE
+--------------------------------------------------------------------------------
+Total monitored points: 26
+Latur points: 25
+Kavathe-Khanapur points: 1
+
+CURRENT DATA AVAILABILITY
+--------------------------------------------------------------------------------
+Current NDVI available: 5/26
+Current GSMaP rainfall available: 26/26
+Current temperature available: 26/26
+Complete current inputs: 5/26
+
+PREDICTION STATUS
+--------------------------------------------------------------------------------
+Prediction-ready points: 5
+Predictions generated: 5
+No-prediction points: 21
+
+FRESHNESS DISTRIBUTION
+--------------------------------------------------------------------------------
+READY: 5
+WARNING: 13
+STALE: 8
+VERY_STALE: 0
+
+OPERATIONAL TREND DISTRIBUTION
+--------------------------------------------------------------------------------
+HIGH_STRESS_RISK: 1
+WATCH: 1
+STABLE: 3
+IMPROVING: 0
+NO_PREDICTION: 21
+
+PREDICTION STATISTICS
+--------------------------------------------------------------------------------
+Predicted NDVI minimum: 0.492197
+Predicted NDVI maximum: 0.783915
+Predicted NDVI mean: 0.651009
+Predicted NDVI change minimum: -0.107078
+Predicted NDVI change maximum: 0.001217
+Predicted NDVI change mean: -0.047196
+
+CASE STUDIES
+--------------------------------------------------------------------------------
+P069: HIGH_STRESS_RISK
+P077: WATCH
+P147: NO_PREDICTION due to insufficient current NDVI availability
+
+INTERPRETATION
+--------------------------------------------------------------------------------
+Operational trend labels describe predicted NDVI direction and are decision-support signals only.
+They are not validated crop-disease diagnoses.
+Missing realtime observations are retained as missing; this report does not fabricate NDVI, rainfall or temperature.
+
+OUTPUT FILES
+--------------------------------------------------------------------------------
+C:\Projects\AgriVision\ml\realtime\final_report\AgriVision_Operational_Status_2026.csv
+C:\Projects\AgriVision\ml\realtime\final_report\AgriVision_Case_Study_2026.csv
+C:\Projects\AgriVision\ml\realtime\final_report\AgriVision_Operational_Metrics.csv
+C:\Projects\AgriVision\ml\realtime\final_report\AgriVision_Operational_Summary.txt
