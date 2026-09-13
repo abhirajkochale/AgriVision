@@ -1,0 +1,67 @@
+@import 'leaflet/dist/leaflet.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+}
+
+/* Custom Leaflet Map Styling */
+.leaflet-container {
+  font-family: inherit;
+  width: 100%;
+  height: 100%;
+  z-index: 10;
+  border-radius: 0.75rem;
+}
+
+/* Custom Marker Pins */
+.agri-marker-wrapper {
+  background: transparent;
+  border: none;
+}
+
+.agri-marker-pin {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  cursor: pointer;
+}
+
+.agri-marker-pin:hover {
+  transform: scale(1.15);
+  z-index: 9999 !important;
+}
+
+.agri-marker-pin.is-selected {
+  transform: scale(1.25);
+  box-shadow: 0 0 0 4px #2a6148, 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+  z-index: 99999 !important;
+}
+
+/* Custom Popup */
+.leaflet-popup-content-wrapper {
+  border-radius: 0.875rem !important;
+  padding: 0 !important;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.15) !important;
+  overflow: hidden;
+}
+
+.leaflet-popup-content {
+  margin: 0 !important;
+  line-height: inherit !important;
+}
+
+.leaflet-popup-tip {
+  box-shadow: none !important;
+}

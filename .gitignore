@@ -5,3 +5,12 @@ venv/
 .env
 .idea/
 .vscode/
+# Webapp dependencies
+webapp/frontend/node_modules/
+
+# Webapp build output
+webapp/frontend/dist/
+
+# Python cache
+webapp/backend/**/__pycache__/
+webapp/backend/**/*.pyc
