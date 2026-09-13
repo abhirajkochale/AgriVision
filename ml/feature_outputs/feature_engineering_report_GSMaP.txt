@@ -1,0 +1,46 @@
+AGRIVISION AI - GSMaP FEATURE ENGINEERING REPORT
+2017–2025
+
+Original combined rows: 78,156
+GSMaP rainfall rows: 78,156
+Usable target rows: 33,655
+Final ML rows: 33,655
+
+Rainfall source: GSMaP
+CHIRPS rainfall was NOT used as an active model feature.
+
+Target: NDVI_next_week
+Target definition: actual NDVI for the same point_id exactly 7 days after the current Week_Start.
+
+No interpolation or fabricated NDVI target values were used.
+No future target information was used as a predictor.
+
+Number of model features: 33
+
+Missing feature values were intentionally retained.
+Rows were NOT removed because of missing lag/rolling features.
+Missing-feature handling belongs to the model-training pipeline.
+The imputer must be fitted using training data only.
+
+GSMaP rainfall statistics:
+Mean:   3.493075
+Median: 0.000000
+Std:    11.860816
+Min:    0.000000
+Max:    332.262052
+
+Year-wise supervised rows:
+2017: 640
+2018: 1,854
+2019: 4,706
+2020: 4,669
+2021: 4,446
+2022: 4,191
+2023: 4,665
+2024: 4,197
+2025: 4,287
+
+Expected supervised population: 33,655
+Actual supervised population: 33,655
+
+STATUS: READY FOR GSMaP MODEL TRAINING

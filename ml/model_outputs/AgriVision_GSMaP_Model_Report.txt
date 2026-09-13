@@ -1,0 +1,71 @@
+AGRIVISION AI - GSMaP MODEL TRAINING REPORT
+2017–2025
+
+RAIN FALL SOURCE
+GSMaP V8 operational
+
+FEATURE DATASET
+C:\Projects\AgriVision\ml\feature_outputs\AgriVision_Maharashtra_ML_Features_GSMaP_2017_2025.csv
+
+MODEL
+ExtraTreesRegressor
+
+HYPERPARAMETERS
+n_estimators=500
+max_depth=30
+max_features=0.8
+min_samples_split=8
+min_samples_leaf=2
+random_state=42
+
+IMPUTATION
+SimpleImputer(strategy='median')
+Imputer is fitted only on the training portion.
+No validation/test information is used to fit imputation.
+
+CHRONOLOGICAL SPLIT
+Training: 2017–2022
+Validation: 2023
+Final training: 2017–2023
+Test: 2024–2025
+
+SAMPLE COUNTS
+Training: 20,506
+Validation: 4,665
+Final training: 25,171
+Test: 8,484
+
+VALIDATION PERFORMANCE
+MAE: 0.04746531
+RMSE: 0.07056371
+R2: 0.89127560
+
+VALIDATION PERSISTENCE BASELINE
+MAE: 0.04880265
+RMSE: 0.07471975
+R2: 0.87809123
+
+FINAL TEST PERFORMANCE - GSMaP
+MAE: 0.04307711
+RMSE: 0.06854949
+R2: 0.89648988
+
+TEST PERSISTENCE BASELINE
+MAE: 0.04572694
+RMSE: 0.07443720
+R2: 0.87794533
+
+VALIDATED CHIRPS TEST PERFORMANCE
+MAE: 0.04313895
+RMSE: 0.06870671
+R2: 0.89601453
+
+GSMaP MINUS CHIRPS
+MAE difference: -0.00006184
+RMSE difference: -0.00015722
+R2 difference: +0.00047535
+
+STATUS
+GSMaP model training and evaluation completed.
+Final decision between CHIRPS and GSMaP should be based on
+the side-by-side test metrics plus operational-data requirements.
