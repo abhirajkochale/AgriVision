@@ -1,0 +1,54 @@
+AGRIVISION AI - REALTIME GSMaP PREDICTION REPORT
+2026
+
+REALTIME INPUT
+C:\Projects\AgriVision\ml\realtime\data\AgriVision_Realtime_Weekly_Kavathe_Latur.csv
+
+MODEL
+C:\Projects\AgriVision\ml\model_outputs\AgriVision_GSMaP_Tuned_ExtraTrees_Model.joblib
+
+CURRENT DATE
+2026-09-13
+
+LATEST REALTIME WEEK
+2026-09-03
+
+Total points: 26
+READY: 5
+STALE: 0
+VERY_STALE: 0
+INCOMPLETE_INPUTS: 21
+Predictions generated: 5
+
+MODEL FEATURES
+33 features
+
+RAINFALL SOURCE
+GSMaP
+
+PREDICTION ELIGIBILITY
+Current NDVI + current GSMaP rainfall + current temperature
+must all be available.
+
+MISSING FEATURE POLICY
+Missing lag/rolling features are preserved.
+The saved training-time SimpleImputer handles model-feature missingness.
+No new live-data imputer is fitted.
+
+NO DATA FABRICATION
+No NDVI values are fabricated.
+No rainfall values are fabricated.
+No temperature values are fabricated.
+
+OPERATIONAL TREND STATUS
+HIGH_STRESS_RISK: predicted NDVI change <= -0.10
+WATCH: predicted NDVI change <= -0.05
+IMPROVING: predicted NDVI change >= +0.05
+STABLE: otherwise
+
+IMPORTANT
+Operational trend labels are decision-support signals only.
+They are not validated disease diagnoses or ground-truth crop-health classes.
+
+OUTPUT
+C:\Projects\AgriVision\ml\realtime\predictions\realtime_predictions_2026.csv
