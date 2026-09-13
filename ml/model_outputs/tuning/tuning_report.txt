@@ -1,0 +1,28 @@
+AGRIVISION AI - EXTRATREES TUNING REPORT
+================================================================================
+
+Training period: 2017-2022
+Validation period: 2023
+Final test period: 2024-2025
+
+Best parameters:
+max_depth: 30
+max_features: 0.8
+min_samples_leaf: 2
+min_samples_split: 8
+n_estimators: 500
+
+Validation performance:
+MAE: 0.04710386
+RMSE: 0.07018443
+R2: 0.89244126
+
+Final test performance:
+MAE: 0.04313895
+RMSE: 0.06870671
+R2: 0.89601453
+
+Improvement over current model:
+RMSE improvement: 0.0657%
+MAE improvement: 0.2075%
+R2 improvement: 0.000137

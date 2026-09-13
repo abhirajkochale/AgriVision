@@ -1,0 +1,45 @@
+AGRIVISION AI - MODEL TRAINING REPORT
+================================================================================
+
+Dataset
+Input file: C:\Projects\AgriVision\ml\feature_outputs\AgriVision_Maharashtra_ML_Features_2017_2025.csv
+Supervised rows: 33,655
+Feature count: 33
+Target: NDVI_next_week
+
+Chronological Split
+Training: 2017-2022
+Validation: 2023
+Test: 2024-2025
+
+Model Selection
+Models compared:
+- Ridge
+- RandomForest
+- ExtraTrees
+- GradientBoosting
+- HistGradientBoosting
+
+Selection criterion: lowest validation RMSE.
+Selected model: ExtraTrees
+
+Final Test Performance
+MAE: 0.04322865
+RMSE: 0.06875187
+R2: 0.89587781
+
+Persistence Baseline - Test
+MAE: 0.04572694
+RMSE: 0.07443720
+R2: 0.87794533
+
+Location-Specific Test Performance
+Latur: samples=1119, MAE=0.04019919, RMSE=0.06239568, R2=0.89312937
+Kavathe-Khanapur: samples=49, MAE=0.05530549, RMSE=0.07302914, R2=0.81953355
+
+Important Methodological Notes
+- No random train/test split was used.
+- Validation data was not used when selecting preprocessing parameters.
+- Test data from 2024-2025 remained untouched during model selection.
+- Missing feature values are handled inside model pipelines.
+- The final selected model was retrained on 2017-2023 before final 2024-2025 evaluation.

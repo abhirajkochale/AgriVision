@@ -1,0 +1,22 @@
+AGRIVISION AI - EDA REPORT
+Combined Master Dataset 2017–2025
+
+Total rows: 78,156
+Total columns: 25
+Unique points: 167
+Unique weeks: 468
+Years: [np.int64(2017), np.int64(2018), np.int64(2019), np.int64(2020), np.int64(2021), np.int64(2022), np.int64(2023), np.int64(2024), np.int64(2025)]
+
+NDVI observations: 45,181
+NDVI coverage: 57.81%
+Rainfall observations: 78,156
+Temperature observations: 78,156
+
+Usable next-week NDVI target rows: 33,655
+Usable next-week target coverage: 43.06%
+
+NDVI range: -1.0 to 0.969539225101471
+Rainfall range: 0.0000 to 789.5917 mm
+Temperature range: 15.3444 to 38.9397 °C
+
+Next step: feature engineering and target construction based on actual next-week NDVI observations.

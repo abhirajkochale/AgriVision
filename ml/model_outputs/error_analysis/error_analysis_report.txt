@@ -1,0 +1,23 @@
+AGRIVISION AI - ERROR ANALYSIS REPORT
+================================================================================
+
+Model: Tuned ExtraTrees
+Evaluation period: 2024-2025
+
+Overall Performance
+Samples: 8,484
+MAE: 0.04313895
+RMSE: 0.06870671
+R2: 0.89601453
+
+Location Performance
+Latur: samples=1119, MAE=0.04016058, RMSE=0.06229206, R2=0.89348401
+Kavathe-Khanapur: samples=49, MAE=0.05552000, RMSE=0.07278479, R2=0.82073918
+Satara: samples=1306, MAE=0.04742168, RMSE=0.06921654, R2=0.88254980
+
+Error interpretation thresholds:
+0.00-0.025 = very small error
+0.025-0.05 = small error
+0.05-0.075 = moderate error
+0.075-0.10 = high error
+>0.10 = very high error

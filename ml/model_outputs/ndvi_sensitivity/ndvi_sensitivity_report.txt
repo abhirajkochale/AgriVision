@@ -1,0 +1,38 @@
+AGRIVISION AI - NDVI SENSITIVITY ANALYSIS
+================================================================================
+
+Original dataset vs audit-filtered dataset
+
+Model:
+Tuned ExtraTrees
+
+Chronological split:
+Train: 2017-2022
+Validation: 2023
+Test: 2024-2025
+
+Audit filtering rule:
+Remove target <= -0.8
+Remove target >= 0.95
+
+Original test metrics:
+MAE: 0.04313895
+RMSE: 0.06870671
+R2: 0.89601453
+
+Filtered test metrics:
+MAE: 0.04242250
+RMSE: 0.06496808
+R2: 0.90215573
+
+Changes:
+RMSE change: -5.4414%
+MAE change: -1.6608%
+R2 change: 0.006141
+
+Recommendation:
+FILTERED VERSION SHOWS A MEANINGFUL IMPROVEMENT. Investigate the extreme observations further before considering removal from production data.
+
+IMPORTANT:
+This experiment does not prove that extreme satellite observations are invalid. It only measures model sensitivity to their inclusion.
+The original master dataset was not modified.

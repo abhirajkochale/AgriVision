@@ -1,0 +1,8 @@
+Metric,Value
+Valid_Target_Observations,33655.0
+Exact_Minus_One,13.0
+Exact_Plus_One,0.0
+Target_Less_Equal_Minus_0.8,20.0
+Target_Greater_Equal_0.95,4.0
+Sensitivity_Excluded,24.0
+Sensitivity_Excluded_Percent,0.07131184073688902

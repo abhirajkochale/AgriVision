@@ -1,0 +1,27 @@
+AGRIVISION AI - FEATURE ABLATION REPORT
+================================================================================
+
+Training period: 2017-2022
+Validation period: 2023
+Test period: 2024-2025
+
+Model: Tuned ExtraTrees
+
+Parameters:
+n_estimators: 500
+max_depth: 30
+max_features: 0.8
+min_samples_split: 8
+min_samples_leaf: 2
+
+Best feature group by validation RMSE:
+Full_Features
+Validation RMSE: 0.07018443
+Validation R2: 0.89244126
+
+Best feature group by test RMSE:
+Full_Features
+Test RMSE: 0.06936043
+Test R2: 0.89402637
+
+Interpretation should use validation results for feature-group selection. The test set is reported as final held-out evidence.

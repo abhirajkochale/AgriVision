@@ -1,0 +1,16 @@
+Parameter,Value
+project,AgriVision AI
+target,NDVI_next_week
+feature_count,33
+features,"['NDVI', 'Rainfall_Current', 'Temperature_Current', 'NDVI_lag_1', 'NDVI_lag_2', 'NDVI_lag_3', 'NDVI_lag_4', 'NDVI_lag_8', 'NDVI_change_1w', 'NDVI_change_2w', 'NDVI_change_4w', 'Rainfall_lag_1', 'Rainfall_lag_2', 'Rainfall_lag_4', 'Rainfall_rolling_2w', 'Rainfall_rolling_4w', 'Rainfall_rolling_8w', 'Temperature_lag_1', 'Temperature_lag_2', 'Temperature_lag_4', 'Temperature_rolling_2w', 'Temperature_rolling_4w', 'Temperature_rolling_8w', 'Week_Of_Year', 'Month', 'Day_Of_Year', 'Year_Index', 'Week_Sin', 'Week_Cos', 'Month_Sin', 'Month_Cos', 'Latitude', 'Longitude']"
+training_period,2017-2022
+validation_period,2023
+test_period,2024-2025
+best_model,ExtraTrees
+validation_selection_metric,RMSE
+final_test_MAE,0.043228646020899104
+final_test_RMSE,0.06875186895454928
+final_test_R2,0.8958778055023842
+training_rows,20506
+validation_rows,4665
+test_rows,8484

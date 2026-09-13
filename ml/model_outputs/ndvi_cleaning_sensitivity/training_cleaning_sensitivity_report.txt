@@ -1,0 +1,27 @@
+AGRIVISION AI - TRAINING CLEANING SENSITIVITY
+================================================================================
+
+Test set was kept identical for both models.
+
+Original model test performance:
+MAE: 0.04313895
+RMSE: 0.06870671
+R2: 0.89601453
+
+Cleaned-training model test performance:
+MAE: 0.04332729
+RMSE: 0.07001719
+R2: 0.89200997
+
+Changes:
+RMSE change: 1.9073%
+MAE change: 0.4366%
+R2 change: -0.004005
+
+Decision:
+CLEANING DOES NOT CLEARLY IMPROVE PERFORMANCE ON THE SAME TEST SET. KEEP THE ORIGINAL DATASET UNLESS SOURCE-LEVEL INVESTIGATION PROVES THE EXTREME VALUES INVALID.
+
+IMPORTANT:
+The suspicious observations were removed only from training and validation for Model B.
+All 2024-2025 test observations were retained for BOTH models.
+The original feature dataset was not modified.

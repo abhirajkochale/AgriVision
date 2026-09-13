@@ -1,0 +1,27 @@
+AGRIVISION AI - FEATURE ENGINEERING REPORT
+2017–2025
+
+Original combined rows: 78,156
+Usable target rows: 33,655
+Rows with all features available: 15,638
+Rows requiring feature imputation: 18,017
+
+Target: NDVI_next_week
+Target definition: actual NDVI for the same point_id exactly 7 days after the current Week_Start.
+
+No interpolation or fabricated NDVI target values were used.
+Rows were NOT removed because of missing historical feature values.
+Missing feature values will be handled during model training using training-only preprocessing.
+
+Number of model features: 33
+
+Year-wise supervised rows:
+2017: 640
+2018: 1,854
+2019: 4,706
+2020: 4,669
+2021: 4,446
+2022: 4,191
+2023: 4,665
+2024: 4,197
+2025: 4,287

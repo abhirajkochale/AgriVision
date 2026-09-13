@@ -1,0 +1,16 @@
+AGRIVISION AI - NDVI QUALITY AUDIT REPORT
+================================================================================
+
+Valid target observations: 33,655
+Exact -1.0 observations: 13
+Exact +1.0 observations: 0
+Target <= -0.8: 20
+Target >= 0.95: 4
+
+Sensitivity rows excluded: 24
+Sensitivity excluded percent: 0.0713%
+
+IMPORTANT:
+The original dataset was NOT modified.
+The sensitivity dataset is for investigation only.
+Extreme values must be checked against the original satellite processing chain before any production data is removed.

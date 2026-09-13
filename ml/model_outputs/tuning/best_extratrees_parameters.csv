@@ -1,0 +1,6 @@
+Parameter,Value
+max_depth,30.0
+max_features,0.8
+min_samples_leaf,2.0
+min_samples_split,8.0
+n_estimators,500.0
